@@ -3,6 +3,9 @@ package com.philipp.note.dao;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +32,17 @@ public class ToDoDao {
 
 	public List<ToDo> list() {
 		@SuppressWarnings("unchecked")
-		TypedQuery<ToDo> query = sessionFactory.getCurrentSession().createQuery("from ToDo");
+		TypedQuery<ToDo> query = sessionFactory.getCurrentSession().createQuery("FROM ToDo");
 		return query.getResultList();
+	}
+	
+
+	public List<ToDo> getTodosByUser(int id) {
+		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<ToDo> cq = sessionFactory.getCurrentSession().getCriteriaBuilder().createQuery(ToDo.class);
+		Root<ToDo> toDoRoot = cq.from(ToDo.class);
+		cq.where(builder.equal(toDoRoot.get("user"), id));
+		return sessionFactory.createEntityManager().createQuery(cq).getResultList();
 	}
 
 	public ToDo getToDo(int id) {

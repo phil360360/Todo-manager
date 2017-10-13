@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -17,6 +18,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.philipp.note.model.ToDo;
+import com.philipp.note.model.User;
 
 @Configuration
 @PropertySource("classpath:db.properties")
@@ -28,7 +30,8 @@ public class AppConfig {
 	   @Autowired
 	   private Environment env;
 
-	   @Bean
+	   @Bean(name = "dataSource")
+	   @Primary
 	   public DataSource getDataSource() {
 	      BasicDataSource dataSource = new BasicDataSource();
 	      dataSource.setDriverClassName(env.getProperty("mysql.driver"));
@@ -39,6 +42,7 @@ public class AppConfig {
 	   }
 
 	   @Bean
+	   @Primary
 	   public LocalSessionFactoryBean getSessionFactory() {
 	      LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 	      factoryBean.setDataSource(getDataSource());
@@ -49,11 +53,13 @@ public class AppConfig {
 	      props.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
 	      factoryBean.setHibernateProperties(props);
-	      factoryBean.setAnnotatedClasses(ToDo.class);
+	      Class[] classes = new Class[] {ToDo.class, User.class};
+	      factoryBean.setAnnotatedClasses(classes);
 	      return factoryBean;
 	   }
 
 	   @Bean
+	   @Primary
 	   public HibernateTransactionManager getTransactionManager() {
 	      HibernateTransactionManager transactionManager = new HibernateTransactionManager();
 	      transactionManager.setSessionFactory(getSessionFactory().getObject());

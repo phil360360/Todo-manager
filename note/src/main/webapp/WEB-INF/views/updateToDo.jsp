@@ -7,13 +7,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-	integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-	crossorigin="anonymous">
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
 <script>
 	$(function() {
 		$("#datepicker").datepicker();
@@ -22,8 +21,9 @@
 <title></title>
 </head>
 <body>
+	<%@ include file="header.jsp"%>
 	<div class="container">
-		<h2 style="padding: 40px;">Edit your ToDo</h2>
+		<h2 class="row">Edit your ToDo</h2>
 		<form action="/note/edit-note" method="POST" modelAttribute="todo">
 			<div class="row" style="padding-bottom: 10px;">
 				<input required="required" type="text" name="name"
@@ -36,7 +36,8 @@
 					value="<spring:eval expression="todo.executionDate" />" />
 			</div>
 			<input type="hidden" name="id" value="<c:out value='${todo.id}'/>" />
-			<input type="hidden" name="image"
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" /> <input type="hidden" name="image"
 				value="<c:out value='${todo.image}'/>" /> <input type="submit"
 				class="row btn btn-primary" value="Update ToDo" />
 		</form>

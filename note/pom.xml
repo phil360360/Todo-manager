@@ -14,6 +14,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring.version>5.0.0.RELEASE</spring.version>
+		<org.springframework.security.version>5.0.0.M1</org.springframework.security.version>
 		<cglib.version>2.2.2</cglib.version>
 	</properties>
 
@@ -37,7 +38,22 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${org.springframework.security.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -133,7 +149,7 @@
 		<repository>
 			<id>springsource-milestones</id>
 			<name>SpringSource Milestones Proxy</name>
-			<url>https://oss.sonatype.org/content/repositories/springsource-milestones</url>
+			<url>http://repo.spring.io/milestone/</url>
 		</repository>
 	</repositories>
 
@@ -156,6 +172,14 @@
 				<configuration>
 					<path>/note</path>
 					<contextReloadable>true</contextReloadable>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 		</plugins>
